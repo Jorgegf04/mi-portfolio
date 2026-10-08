@@ -7,8 +7,8 @@ export type ContactPayload = {
 }
 
 export class ContactError extends Error {
-  constructor(message: string, readonly status: number) {
-    super(message)
+  constructor(readonly code: 'errorInvalid' | 'errorTooLong' | 'errorRateLimit' | 'errorUnavailable' | 'errorTimeout' | 'errorNetwork' | 'errorGeneric', readonly status: number) {
+    super(code)
   }
 }
 
@@ -24,19 +24,19 @@ export async function sendContact(payload: ContactPayload): Promise<void> {
     })
     if (response.ok) return
 
-    const messages: Record<number, string> = {
-      400: 'Revisa los campos del formulario e inténtalo de nuevo.',
-      413: 'El mensaje es demasiado largo. Redúcelo e inténtalo de nuevo.',
-      429: 'Has enviado varios mensajes. Espera unos minutos antes de volver a intentarlo.',
-      503: 'El formulario no está disponible ahora. Escríbeme directamente por correo.',
+    const codes: Record<number, ContactError['code']> = {
+      400: 'errorInvalid',
+      413: 'errorTooLong',
+      429: 'errorRateLimit',
+      503: 'errorUnavailable',
     }
-    throw new ContactError(messages[response.status] ?? 'No se pudo enviar el mensaje. Inténtalo más tarde.', response.status)
+    throw new ContactError(codes[response.status] ?? 'errorGeneric', response.status)
   } catch (error) {
     if (error instanceof ContactError) throw error
     if (error instanceof DOMException && error.name === 'AbortError') {
-      throw new ContactError('La conexión ha tardado demasiado. Inténtalo de nuevo.', 0)
+      throw new ContactError('errorTimeout', 0)
     }
-    throw new ContactError('No se pudo conectar. Comprueba tu conexión e inténtalo de nuevo.', 0)
+    throw new ContactError('errorNetwork', 0)
   } finally {
     window.clearTimeout(timeout)
   }

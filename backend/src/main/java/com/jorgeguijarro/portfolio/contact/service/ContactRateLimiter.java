@@ -1,4 +1,4 @@
-package com.jorgeguijarro.portfolio.contact;
+package com.jorgeguijarro.portfolio.contact.service;
 
 import java.time.Clock;
 import java.time.Duration;

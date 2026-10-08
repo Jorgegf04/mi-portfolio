@@ -1,4 +1,6 @@
-package com.jorgeguijarro.portfolio.contact;
+package com.jorgeguijarro.portfolio.contact.service;
+
+import com.jorgeguijarro.portfolio.contact.service.ContactRateLimiter;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

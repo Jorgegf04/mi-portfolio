@@ -1,5 +1,9 @@
 package com.jorgeguijarro.portfolio.contact;
 
+import com.jorgeguijarro.portfolio.contact.dto.ContactRequest;
+import com.jorgeguijarro.portfolio.contact.exception.ContactDeliveryException;
+import com.jorgeguijarro.portfolio.contact.service.ContactService;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;

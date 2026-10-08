@@ -1,4 +1,7 @@
-package com.jorgeguijarro.portfolio.contact;
+package com.jorgeguijarro.portfolio.contact.service;
+
+import com.jorgeguijarro.portfolio.contact.dto.ContactRequest;
+import com.jorgeguijarro.portfolio.contact.exception.ContactDeliveryException;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;

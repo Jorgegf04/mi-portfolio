@@ -10,9 +10,17 @@ const output = resolve('test-results/visual')
 await mkdir(output, { recursive: true })
 
 try {
-  for (const [name, width, height] of [['desktop', 1440, 900], ['mobile', 390, 844]]) {
-    const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 })
+  for (const [name, width, height, locale] of [
+    ['desktop', 1440, 900, 'es-ES'], ['mobile', 390, 844, 'es-ES'],
+    ['desktop-en', 1440, 900, 'en-US'], ['mobile-en', 390, 844, 'en-US'],
+  ]) {
+    const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1, locale })
     await page.goto('http://127.0.0.1:4174/', { waitUntil: 'networkidle' })
+    for (const image of await page.locator('img').all()) {
+      await image.scrollIntoViewIfNeeded()
+      await image.evaluate(element => element.decode())
+    }
+    await page.evaluate(() => window.scrollTo(0, 0))
     await page.screenshot({ path: resolve(output, `${name}.png`), fullPage: true })
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)
     console.log(`${name}: horizontal overflow ${overflow}px`)

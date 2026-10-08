@@ -1,4 +1,4 @@
-package com.jorgeguijarro.portfolio.contact;
+package com.jorgeguijarro.portfolio.contact.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

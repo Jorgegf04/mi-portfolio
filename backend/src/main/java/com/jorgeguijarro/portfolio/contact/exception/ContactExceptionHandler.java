@@ -1,4 +1,6 @@
-package com.jorgeguijarro.portfolio.contact;
+package com.jorgeguijarro.portfolio.contact.exception;
+
+import com.jorgeguijarro.portfolio.contact.dto.ApiResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

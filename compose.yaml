@@ -10,8 +10,8 @@ services:
   backend:
     build: ./backend
     environment:
-      MAIL_HOST: ${MAIL_HOST:-mailpit}
-      MAIL_PORT: ${MAIL_PORT:-1025}
+      MAIL_HOST: ${MAIL_HOST:-${DEV_MAIL_HOST:-mailpit}}
+      MAIL_PORT: ${MAIL_PORT:-${DEV_MAIL_PORT:-1025}}
       MAIL_USERNAME: ${MAIL_USERNAME:-}
       MAIL_PASSWORD: ${MAIL_PASSWORD:-}
       MAIL_SMTP_AUTH: ${MAIL_SMTP_AUTH:-false}

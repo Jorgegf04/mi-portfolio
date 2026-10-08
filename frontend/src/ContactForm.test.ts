@@ -1,9 +1,13 @@
 import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import ContactForm from './ContactForm.vue'
-import { sendContact } from './contactApi'
+import { ContactError, sendContact } from './contactApi'
+import { setLocale } from './i18n'
 
-vi.mock('./contactApi', () => ({ sendContact: vi.fn() }))
+vi.mock('./contactApi', async importOriginal => ({
+  ...(await importOriginal<typeof import('./contactApi')>()),
+  sendContact: vi.fn(),
+}))
 
 async function completeForm(wrapper: ReturnType<typeof mount>) {
   await wrapper.get('#contact-name').setValue('Ana')
@@ -13,7 +17,10 @@ async function completeForm(wrapper: ReturnType<typeof mount>) {
 }
 
 describe('ContactForm', () => {
-  beforeEach(() => vi.resetAllMocks())
+  beforeEach(() => {
+    vi.resetAllMocks()
+    setLocale('es')
+  })
 
   it('submits the visitor message and shows confirmation', async () => {
     vi.mocked(sendContact).mockResolvedValue()
@@ -30,7 +37,7 @@ describe('ContactForm', () => {
   })
 
   it('keeps the text and explains a delivery failure', async () => {
-    vi.mocked(sendContact).mockRejectedValue(new Error('El formulario no está disponible ahora.'))
+    vi.mocked(sendContact).mockRejectedValue(new ContactError('errorUnavailable', 503))
     const wrapper = mount(ContactForm)
     await completeForm(wrapper)
     await wrapper.get('form').trigger('submit')
