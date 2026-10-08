@@ -82,10 +82,10 @@ export const projects: Project[] = [
     name: 'Este portfolio',
     kind: 'Proyecto personal',
     description:
-      'Una web para presentar mi experiencia y proyectos, con un frontend en Vue y una API en Spring Boot que gestiona el contacto por correo.',
+      'Una web para presentar mi experiencia y proyectos. Incluye un frontend en Vue y una API en Spring Boot para el formulario de contacto.',
     highlights: [
       'Frontend adaptable y accesible, con contenido fácil de ampliar.',
-      'API de contacto con validación, protección frente a abuso y envío SMTP.',
+      'API de contacto con validación y envío SMTP para el desarrollo local.',
       'Pruebas automatizadas y ejecución local con Docker Compose.',
     ],
     technologies: ['Vue 3', 'TypeScript', 'Spring Boot', 'Java', 'SMTP', 'Docker'],
@@ -184,10 +184,10 @@ export const contentByLocale = {
       },
       {
         number: '02', name: 'This portfolio', kind: 'Personal project',
-        description: 'A website that presents my experience and projects, with a Vue frontend and a Spring Boot API that handles email contact.',
+        description: 'A website that presents my experience and projects. It includes a Vue frontend and a Spring Boot API for the contact form.',
         highlights: [
           'Responsive and accessible frontend with content that is easy to expand.',
-          'Contact API with validation, abuse protection, and SMTP delivery.',
+          'Contact API with validation and SMTP delivery for local development.',
           'Automated tests and local setup with Docker Compose.',
         ],
         technologies: ['Vue 3', 'TypeScript', 'Spring Boot', 'Java', 'SMTP', 'Docker'],

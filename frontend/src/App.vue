@@ -69,10 +69,10 @@ function closeMenu() {
           <div class="orbit orbit-one" aria-hidden="true"></div>
           <div class="orbit orbit-two" aria-hidden="true"></div>
           <div class="api-panel">
-            <div class="api-topbar"><span class="api-dots"><i></i><i></i><i></i></span><span>portfolio / backend</span><span class="api-live"><span></span> online</span></div>
+            <div class="api-topbar"><span class="api-dots"><i></i><i></i><i></i></span><span>portfolio / contacto</span><span class="api-live"><span></span> online</span></div>
             <div class="api-body">
-              <div class="api-route"><span class="method">POST</span><span>/api/contact</span></div>
-              <div class="api-code"><span class="code-comment">{{ t('apiComment') }}</span><br /><span class="code-purple">const</span> message = <span class="code-cyan">validate</span>(request)<br /><span class="code-purple">await</span> mailService.<span class="code-cyan">send</span>(message)<br /><span class="code-purple">return</span> <span class="code-green">&#123; status: 'sent' &#125;</span></div>
+              <div class="api-route"><span class="method">EMAIL</span><span>jgfestudios@gmail.com</span></div>
+              <div class="api-code"><span class="code-comment">{{ t('apiComment') }}</span><br /><span class="code-purple">const</span> draft = <span class="code-cyan">createMailto</span>(message)<br /><span class="code-purple">open</span>(draft, emailApp)<br /><span class="code-purple">return</span> <span class="code-green">&#123; status: 'prepared' &#125;</span></div>
               <div class="api-pipeline"><div><span class="pipeline-icon">01</span><span>{{ t('apiInput') }}</span></div><span class="pipeline-connector"></span><div><span class="pipeline-icon">02</span><span>{{ t('apiValidation') }}</span></div><span class="pipeline-connector"></span><div><span class="pipeline-icon">03</span><span>{{ t('apiDelivery') }}</span></div></div>
             </div>
           </div>
