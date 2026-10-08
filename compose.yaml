@@ -1,0 +1,28 @@
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:${PORTFOLIO_PORT:-8081}:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    environment:
+      MAIL_HOST: ${MAIL_HOST:-mailpit}
+      MAIL_PORT: ${MAIL_PORT:-1025}
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      MAIL_SMTP_AUTH: ${MAIL_SMTP_AUTH:-false}
+      MAIL_SMTP_STARTTLS: ${MAIL_SMTP_STARTTLS:-false}
+      CONTACT_SENDER: ${CONTACT_SENDER:-jgfestudios@gmail.com}
+      CONTACT_RECIPIENT: ${CONTACT_RECIPIENT:-jgfestudios@gmail.com}
+      CONTACT_TRUST_PROXY: "true"
+    restart: unless-stopped
+
+  mailpit:
+    image: axllent/mailpit:v1.31.4
+    profiles: [dev]
+    ports:
+      - "127.0.0.1:8025:8025"
