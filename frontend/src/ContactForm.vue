@@ -1,28 +1,13 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { ContactError, sendContact, type ContactPayload } from './contactApi'
-import { t, type MessageKey } from './i18n'
+import { createContactMailto, type ContactPayload } from './contactApi'
+import { t } from './i18n'
 
-const form = reactive<ContactPayload>({ name: '', email: '', subject: '', message: '', website: '' })
-const state = ref<'idle' | 'sending' | 'success' | 'error'>('idle')
-const errorKey = ref<MessageKey>('errorGeneric')
+const form = reactive<ContactPayload>({ name: '', email: '', subject: '', message: '' })
+const mailto = ref('')
 
-async function submit() {
-  if (state.value === 'sending') return
-  state.value = 'sending'
-  errorKey.value = 'errorGeneric'
-  try {
-    await sendContact({ ...form })
-    state.value = 'success'
-    form.name = ''
-    form.email = ''
-    form.subject = ''
-    form.message = ''
-    form.website = ''
-  } catch (error) {
-    errorKey.value = error instanceof ContactError ? error.code : 'errorGeneric'
-    state.value = 'error'
-  }
+function submit() {
+  mailto.value = createContactMailto({ ...form })
 }
 </script>
 
@@ -31,34 +16,32 @@ async function submit() {
     <div class="form-row">
       <div class="field">
         <label for="contact-name">{{ t('formName') }}</label>
-        <input id="contact-name" v-model.trim="form.name" name="name" type="text" autocomplete="name" maxlength="100" required :disabled="state === 'sending'" />
+        <input id="contact-name" v-model.trim="form.name" name="name" type="text" autocomplete="name" maxlength="100" required />
       </div>
       <div class="field">
         <label for="contact-email">{{ t('formEmail') }}</label>
-        <input id="contact-email" v-model.trim="form.email" name="email" type="email" autocomplete="email" maxlength="254" required :disabled="state === 'sending'" />
+        <input id="contact-email" v-model.trim="form.email" name="email" type="email" autocomplete="email" maxlength="254" required />
       </div>
     </div>
     <div class="field">
       <label for="contact-subject">{{ t('formSubject') }}</label>
-      <input id="contact-subject" v-model.trim="form.subject" name="subject" type="text" maxlength="150" required :disabled="state === 'sending'" />
+      <input id="contact-subject" v-model.trim="form.subject" name="subject" type="text" maxlength="150" required />
     </div>
     <div class="field">
       <label for="contact-message">{{ t('formMessage') }}</label>
-      <textarea id="contact-message" v-model.trim="form.message" name="message" rows="5" minlength="20" maxlength="3000" required :disabled="state === 'sending'" :placeholder="t('formPlaceholder')"></textarea>
+      <textarea id="contact-message" v-model.trim="form.message" name="message" rows="5" minlength="20" maxlength="3000" required :placeholder="t('formPlaceholder')"></textarea>
       <span class="field-hint">{{ t('formHint') }}</span>
     </div>
-    <div class="honeypot" aria-hidden="true">
-      <label for="contact-website">{{ t('formHoneypot') }}</label>
-      <input id="contact-website" v-model="form.website" name="website" type="text" autocomplete="off" tabindex="-1" />
-    </div>
     <div class="form-footer">
-      <button class="button button-primary" type="submit" :disabled="state === 'sending'">
-        {{ state === 'sending' ? t('formSending') : t('formSubmit') }}
+      <button class="button button-primary" type="submit">
+        {{ t('formSubmit') }}
         <span aria-hidden="true">↗</span>
       </button>
       <p class="form-note">{{ t('formNote') }}</p>
     </div>
-    <p v-if="state === 'success'" class="form-feedback success" role="status">{{ t('formSuccess') }}</p>
-    <p v-if="state === 'error'" class="form-feedback error" role="alert">{{ t(errorKey) }}</p>
+    <div v-if="mailto" class="form-feedback success" role="status">
+      <p>{{ t('formPrepared') }}</p>
+      <a class="button button-primary" :href="mailto">{{ t('formOpenEmail') }} <span aria-hidden="true">↗</span></a>
+    </div>
   </form>
 </template>

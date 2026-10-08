@@ -12,19 +12,21 @@ test('shows the professional story and working project links', async ({ page }) 
   await expect(page.getByRole('link', { name: 'Ver código de Este portfolio en GitHub' })).toHaveAttribute('href', 'https://github.com/Jorgegf04/mi-portfolio')
 })
 
-test('contact form confirms a successful API response', async ({ page }) => {
-  await page.route('**/api/contact', async route => {
-    const body = route.request().postDataJSON()
-    expect(body.email).toBe('ana@example.com')
-    await route.fulfill({ status: 200, contentType: 'application/json', body: '{"status":"sent"}' })
-  })
+test('contact form prepares an email draft without claiming it was sent', async ({ page }) => {
   await page.goto('/#contacto')
   await page.getByLabel('Nombre').fill('Ana')
   await page.getByLabel('Correo electrónico').fill('ana@example.com')
   await page.getByLabel('Asunto').fill('Trabajo')
   await page.getByLabel('Mensaje').fill('Me gustaría hablar sobre una oportunidad de trabajo.')
-  await page.getByRole('button', { name: 'Enviar mensaje' }).click()
-  await expect(page.getByRole('status')).toContainText('Mensaje enviado')
+  await page.getByRole('button', { name: 'Preparar correo' }).click()
+  await expect(page.getByRole('status')).toContainText('El borrador está listo')
+  await expect(page.getByRole('status')).toContainText('aún no se ha enviado')
+  const emailLink = page.getByRole('link', { name: 'Abrir correo para enviar' })
+  await expect(emailLink).toHaveAttribute('href', /^mailto:jgfestudios@gmail\.com\?subject=/)
+  const mailto = decodeURIComponent((await emailLink.getAttribute('href'))!)
+  expect(mailto).toContain('Portfolio: Trabajo')
+  expect(mailto).toContain('Nombre: Ana\nCorreo: ana@example.com')
+  expect(mailto).toContain('Me gustaría hablar sobre una oportunidad de trabajo.')
 })
 
 test('supports keyboard navigation and serves the downloadable CV', async ({ page }) => {

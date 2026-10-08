@@ -97,6 +97,14 @@ npm run build
 npm run test:e2e
 ```
 
+## Despliegue gratuito en Render
+
+El archivo `render.yaml` configura solo la web estática. Para publicarla, sube el proyecto a GitHub, crea una cuenta gratuita en Render y selecciona **New > Blueprint**, eligiendo este repositorio. Render construirá la web y publicará el contenido de `frontend/dist`.
+
+El formulario abre un borrador dirigido a `jgfestudios@gmail.com` en la aplicación de correo del visitante. El visitante debe revisar y enviar ese correo. La web no lo envía por su cuenta ni puede confirmar su entrega. Esta opción no necesita dominio propio, servidor de correo ni claves secretas.
+
+La API Spring Boot se mantiene para el desarrollo local y se puede desplegar más adelante si necesitas envío automático desde la web.
+
 ## Contenido
 
 - `frontend/src/content.ts`: proyectos, experiencia y tecnologías.

@@ -1,13 +1,7 @@
-import { flushPromises, mount } from '@vue/test-utils'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { mount } from '@vue/test-utils'
+import { beforeEach, describe, expect, it } from 'vitest'
 import ContactForm from './ContactForm.vue'
-import { ContactError, sendContact } from './contactApi'
 import { setLocale } from './i18n'
-
-vi.mock('./contactApi', async importOriginal => ({
-  ...(await importOriginal<typeof import('./contactApi')>()),
-  sendContact: vi.fn(),
-}))
 
 async function completeForm(wrapper: ReturnType<typeof mount>) {
   await wrapper.get('#contact-name').setValue('Ana')
@@ -17,33 +11,22 @@ async function completeForm(wrapper: ReturnType<typeof mount>) {
 }
 
 describe('ContactForm', () => {
-  beforeEach(() => {
-    vi.resetAllMocks()
-    setLocale('es')
-  })
+  beforeEach(() => setLocale('es'))
 
-  it('submits the visitor message and shows confirmation', async () => {
-    vi.mocked(sendContact).mockResolvedValue()
+  it('prepares a draft without claiming it has been sent', async () => {
     const wrapper = mount(ContactForm)
     await completeForm(wrapper)
     await wrapper.get('form').trigger('submit')
-    await flushPromises()
 
-    expect(sendContact).toHaveBeenCalledWith(expect.objectContaining({
-      name: 'Ana', email: 'ana@example.com', subject: 'Trabajo',
-    }))
-    expect(wrapper.get('[role="status"]').text()).toContain('Mensaje enviado')
-    expect((wrapper.get('#contact-message').element as HTMLTextAreaElement).value).toBe('')
-  })
+    const status = wrapper.get('[role="status"]')
+    expect(status.text()).toContain('El borrador está listo')
+    expect(status.text()).toContain('aún no se ha enviado')
 
-  it('keeps the text and explains a delivery failure', async () => {
-    vi.mocked(sendContact).mockRejectedValue(new ContactError('errorUnavailable', 503))
-    const wrapper = mount(ContactForm)
-    await completeForm(wrapper)
-    await wrapper.get('form').trigger('submit')
-    await flushPromises()
-
-    expect(wrapper.get('[role="alert"]').text()).toContain('no está disponible')
+    const href = wrapper.get('a[href^="mailto:"]').attributes('href')!
+    expect(href).toContain('mailto:jgfestudios@gmail.com')
+    expect(decodeURIComponent(href)).toContain('Portfolio: Trabajo')
+    expect(decodeURIComponent(href)).toContain('Nombre: Ana\nCorreo: ana@example.com')
+    expect(decodeURIComponent(href)).toContain('Me gustaría hablar sobre una oportunidad de trabajo.')
     expect((wrapper.get('#contact-message').element as HTMLTextAreaElement).value).toContain('oportunidad')
   })
 })
