@@ -105,6 +105,46 @@ El formulario abre un borrador dirigido a `jgfestudios@gmail.com` en la aplicaci
 
 La API Spring Boot se mantiene para el desarrollo local y se puede desplegar más adelante si necesitas envío automático desde la web.
 
+## Despliegue en Vercel
+
+Vercel publica la web estática de `frontend`. El formulario prepara un borrador de correo en la aplicación del visitante, por lo que este despliegue no necesita la API Java ni variables SMTP.
+
+1. Crea una cuenta en [Vercel](https://vercel.com/signup) con GitHub.
+2. Sube los cambios del proyecto al repositorio `Jorgegf04/mi-portfolio`.
+3. En Vercel, selecciona **Add New > Project** e importa ese repositorio.
+4. Selecciona **Root Directory: frontend** y **Framework Preset: Vite**.
+5. Comprueba los ajustes y pulsa **Deploy**:
+
+| Ajuste | Valor |
+| --- | --- |
+| Node.js Version | `24.x` |
+| Install Command | `npm ci` |
+| Build Command | `npm run build` |
+| Output Directory | `dist` |
+| Environment Variables | Ninguna necesaria |
+
+El archivo `frontend/vercel.json` guarda la configuración de construcción y la redirección interna a `index.html`. No subas el `.env` de correo a Vercel. Una vez conectado GitHub, los cambios en la rama de producción se desplegarán automáticamente.
+
+### Dominio de Hostinger
+
+Dominio previsto: `jorgeguijarro-portfolio.dev`. Para alojar esta web en Vercel, basta con registrar el dominio; no hace falta contratar alojamiento web en Hostinger.
+
+1. Cuando el dominio esté comprado y activo, abre **Settings > Domains** en el proyecto de Vercel.
+2. Añade `jorgeguijarro-portfolio.dev` y `www.jorgeguijarro-portfolio.dev`. Configura `www` para redirigir al dominio sin `www`.
+3. En Hostinger, entra en **Domains > Domain portfolio > Manage > DNS / Nameservers** y edita los registros DNS, conservando sus servidores de nombres.
+4. Copia los valores exactos mostrados por Vercel:
+
+| Tipo | Nombre en Hostinger | Destino |
+| --- | --- | --- |
+| A | `@` | La dirección IP que indique Vercel para el dominio principal |
+| CNAME | `www` | El destino que indique Vercel para ese subdominio |
+
+Sustituye únicamente los registros web que entren en conflicto para esos nombres. Conserva los registros de correo y verificación que puedas tener.
+
+Espera a que Vercel confirme la configuración DNS y el certificado HTTPS. Después comprueba la página, las imágenes, la descarga del CV, el cambio de idioma y el formulario en `https://jorgeguijarro-portfolio.dev`.
+
+Referencias: [Vite en Vercel](https://vercel.com/docs/frameworks/frontend/vite), [dominios personalizados en Vercel](https://vercel.com/docs/domains/working-with-domains/add-a-domain) y [editor DNS de Hostinger](https://www.hostinger.com/support/how-to-use-hostingers-dns-zone-editor/).
+
 ## Contenido
 
 - `frontend/src/content.ts`: proyectos, experiencia y tecnologías.

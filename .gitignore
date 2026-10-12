@@ -5,6 +5,7 @@ target/
 .env.*.local
 .idea/
 .vscode/
+.vercel/
 playwright-report/
 test-results/
 coverage/

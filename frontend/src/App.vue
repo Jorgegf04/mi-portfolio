@@ -7,8 +7,8 @@ import { locale, setLocale, t } from './i18n'
 const menuOpen = ref(false)
 const year = new Date().getFullYear()
 const nav = computed(() => [
-  { href: '#proyectos', label: t('navProjects') },
   { href: '#sobre-mi', label: t('navAbout') },
+  { href: '#proyectos', label: t('navProjects') },
   { href: '#experiencia', label: t('navExperience') },
   { href: '#tecnologias', label: t('navTechnologies') },
   { href: '#contacto', label: t('navContact') },
@@ -80,7 +80,26 @@ function closeMenu() {
           <div class="floating-label floating-label-bottom"><span class="tiny-square"></span> {{ t('endToEnd') }}</div>
         </div>
       </div>
-      <div class="container hero-bottom"><span>{{ t('heroIndex') }}</span><a href="#proyectos">{{ t('heroExplore') }} <span aria-hidden="true">↓</span></a></div>
+      <div class="container hero-bottom"><span>{{ t('heroIndex') }}</span><a href="#sobre-mi">{{ t('heroExplore') }} <span aria-hidden="true">↓</span></a></div>
+    </section>
+
+    <section id="sobre-mi" class="section about-section">
+      <div class="container about-layout">
+        <div class="about-content">
+          <span class="section-kicker">{{ t('aboutKicker') }}</span>
+          <h2>{{ t('aboutTitle') }} <em>{{ t('aboutTitleEm') }}</em></h2>
+          <div class="about-signature">
+            <span class="signature-mark" aria-hidden="true">{ }</span>
+            <span class="signature-copy"><strong>Java · Spring Boot</strong><small>{{ t('aboutSignature') }}</small></span>
+            <span class="signature-status" aria-hidden="true"></span>
+          </div>
+          <p class="lead">{{ t('aboutLead') }}</p>
+          <p>{{ t('aboutP2') }}</p>
+          <p>{{ t('aboutP3') }}</p>
+          <div class="about-points"><span><b>01</b> {{ t('aboutPoint1') }}</span><span><b>02</b> {{ t('aboutPoint2') }}</span><span><b>03</b> {{ t('aboutPoint3') }}</span></div>
+        </div>
+        <img class="about-portrait" src="/jorge-guijarro.jpg" :alt="t('portraitAlt')" width="2048" height="1536" loading="lazy" decoding="async" />
+      </div>
     </section>
 
     <section id="proyectos" class="section projects-section">
@@ -118,25 +137,6 @@ function closeMenu() {
             </div>
           </article>
         </div>
-      </div>
-    </section>
-
-    <section id="sobre-mi" class="section about-section">
-      <div class="container about-layout">
-        <div class="about-content">
-          <span class="section-kicker">{{ t('aboutKicker') }}</span>
-          <h2>{{ t('aboutTitle') }} <em>{{ t('aboutTitleEm') }}</em></h2>
-          <div class="about-signature">
-            <span class="signature-mark" aria-hidden="true">{ }</span>
-            <span class="signature-copy"><strong>Java · Spring Boot</strong><small>{{ t('aboutSignature') }}</small></span>
-            <span class="signature-status" aria-hidden="true"></span>
-          </div>
-          <p class="lead">{{ t('aboutLead') }}</p>
-          <p>{{ t('aboutP2') }}</p>
-          <p>{{ t('aboutP3') }}</p>
-          <div class="about-points"><span><b>01</b> {{ t('aboutPoint1') }}</span><span><b>02</b> {{ t('aboutPoint2') }}</span><span><b>03</b> {{ t('aboutPoint3') }}</span></div>
-        </div>
-        <img class="about-portrait" src="/jorge-guijarro.jpg" :alt="t('portraitAlt')" width="2048" height="1536" loading="lazy" decoding="async" />
       </div>
     </section>
 
